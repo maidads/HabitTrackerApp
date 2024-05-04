@@ -29,13 +29,16 @@ struct ContentView: View {
                 .onDelete(perform: deleteItems)
             }
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: addItem) {
+                        HStack {
+                            Image(systemName: "plus")
+                            Text("Add a new habit")
+                        }
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
                 }
             }
             Text("Select an item")
