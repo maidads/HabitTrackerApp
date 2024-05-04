@@ -21,9 +21,9 @@ struct ContentView: View {
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                        Text("Habit: \(item.name ?? "New Habit")")
                     } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
+                        Text(item.name ?? "New Habit")
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -48,9 +48,8 @@ struct ContentView: View {
     private func addItem() {
         withAnimation {
             let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-            newItem.name = "New Habit"  // Antagande att det finns en 'name' egenskap
-
+            //newItem.timestamp = Date()
+            newItem.name = "New Habit"
             do {
                 try viewContext.save()
             } catch {
