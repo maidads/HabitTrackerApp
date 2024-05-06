@@ -180,6 +180,8 @@ extension Color {
 struct HabitRow: View {
     @ObservedObject var item: Item
     @State private var daysSelected: [Bool] = [false, false, false, false, false, false, false]
+    @State private var currentStreak: Int = 0
+
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -195,14 +197,37 @@ struct HabitRow: View {
                             .frame(width: 20, height: 20)
                             .onTapGesture {
                                 daysSelected[index].toggle()
+                                currentStreak = calculateStreak(at: index)
                             }
                         Text(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][index])
                             .font(.caption)
                     }
                 }
+                Text("🔥 \(currentStreak)")
+                                    .padding(.leading, 40)
+                                    .foregroundColor(Color.black)
             }
         }
     }
+    
+    func calculateStreak(at index: Int) -> Int {
+            var streakCount = 0
+            for i in index..<daysSelected.count {
+                if daysSelected[i] {
+                    streakCount += 1
+                } else {
+                    break
+                }
+            }
+            for i in (0..<index).reversed() {
+                if daysSelected[i] {
+                    streakCount += 1
+                } else {
+                    break
+                }
+            }
+            return streakCount
+        }
 }
 
 
