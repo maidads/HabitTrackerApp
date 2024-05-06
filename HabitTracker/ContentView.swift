@@ -102,3 +102,4 @@ struct HabitDetailView: View {
         Text("Detail view for \(item.name ?? "New Habit")")
     }
 }
+
