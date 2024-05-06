@@ -198,6 +198,7 @@ struct HabitRow: View {
                             .onTapGesture {
                                 daysSelected[index].toggle()
                                 currentStreak = calculateStreak(at: index)
+                                updateDaysSelectedInCoreData()
                             }
                         Text(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][index])
                             .font(.caption)
@@ -207,8 +208,24 @@ struct HabitRow: View {
                                     .padding(.leading, 40)
                                     .foregroundColor(Color.black)
             }
+        }.onAppear {
+            loadDaysSelected()
         }
     }
+    func loadDaysSelected() {
+            if let daysString = item.daysSelected {
+                daysSelected = daysString.map { $0 == "1" }
+            }
+        }
+
+        func updateDaysSelectedInCoreData() {
+            item.daysSelected = daysSelected.map { $0 ? "1" : "0" }.joined()
+            do {
+                try item.managedObjectContext?.save()
+            } catch {
+                print("Failed to save days selected: \(error)")
+            }
+        }
     
     func calculateStreak(at index: Int) -> Int {
             var streakCount = 0
@@ -229,6 +246,7 @@ struct HabitRow: View {
             return streakCount
         }
 }
+
 
 
 
