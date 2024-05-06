@@ -34,7 +34,10 @@ struct ContentView: View {
             .sheet(isPresented: $showingAddHabitView) {
                 AddHabitView()
             }
-        }.accentColor(.black)
+            .navigationBarTitle("Habit Tracker", displayMode: .large)
+            .navigationBarTitleDisplayMode(.large)
+        }
+        .accentColor(.black)
     }
 
     private func addItem() {
