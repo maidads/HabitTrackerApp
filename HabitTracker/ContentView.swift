@@ -3,11 +3,8 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)], animation: .default) private var items: FetchedResults<Item>
+    @State private var showingAddHabitView = false
 
     var body: some View {
         NavigationView {
@@ -21,7 +18,9 @@ struct ContentView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: addItem) {
+                    Button(action: {
+                        showingAddHabitView = true
+                    }) {
                         HStack {
                             Image(systemName: "plus")
                             Text("Add a new habit")
@@ -31,6 +30,9 @@ struct ContentView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
+            }
+            .sheet(isPresented: $showingAddHabitView) {
+                AddHabitView()
             }
         }
     }
@@ -61,6 +63,7 @@ struct ContentView: View {
         }
     }
 }
+
 
 struct HabitRow: View {
     @ObservedObject var item: Item
@@ -97,9 +100,82 @@ struct HabitRow: View {
 
 struct HabitDetailView: View {
     @ObservedObject var item: Item
+    @State private var newName: String
+
+    @Environment(\.presentationMode) var presentationMode
+
+    init(item: Item) {
+        self.item = item
+        _newName = State(initialValue: item.name ?? "")
+    }
 
     var body: some View {
-        Text("Detail view for \(item.name ?? "New Habit")")
+        VStack {
+            TextField("Enter new name", text: $newName)
+                .padding()
+            Button("Save") {
+                if !newName.isEmpty {
+                    item.name = newName
+                    do {
+                        try item.managedObjectContext?.save()
+                        presentationMode.wrappedValue.dismiss()
+                    } catch {
+                        let nsError = error as NSError
+                        fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                    }
+                }
+            }
+            .padding()
+        }
+        .onAppear {
+            newName = item.name ?? ""
+        }
+        .navigationTitle("Edit Habit")
     }
 }
+
+
+struct AddHabitView: View {
+    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.managedObjectContext) private var viewContext
+    @State private var habitName: String = ""
+
+    var body: some View {
+        ZStack {
+            Color.blue.opacity(0.1)
+            VStack {
+                TextField("Enter habit name", text: $habitName)
+                    .padding()
+                HStack {
+                    Spacer()
+                    Button("Cancel") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    .padding(.horizontal)
+                    Button("Save") {
+                        if !habitName.isEmpty {
+                            let newItem = Item(context: viewContext)
+                            newItem.name = habitName
+                            do {
+                                try viewContext.save()
+                                presentationMode.wrappedValue.dismiss()
+                            } catch {
+                                let nsError = error as NSError
+                                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+            }
+            .padding()
+            .background(Color.white)
+            .cornerRadius(16)
+            .shadow(radius: 10)
+        }
+    }
+}
+
+
+
 
