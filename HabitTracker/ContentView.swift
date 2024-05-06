@@ -64,40 +64,6 @@ struct ContentView: View {
     }
 }
 
-
-struct HabitRow: View {
-    @ObservedObject var item: Item
-    @State private var daysSelected: [Bool] = [false, false, false, false, false, false, false]
-    let weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    let rainbowColors: [Color] = [
-        Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple, Color.pink
-    ]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(item.name ?? "New Habit")
-            HStack {
-                ForEach(0..<7) { index in
-                    VStack {
-                        Circle()
-                            .fill(daysSelected[index] ? rainbowColors[index] : Color.clear)
-                            .overlay(
-                                Circle().stroke(rainbowColors[index], lineWidth: 2)
-                            )
-                            .frame(width: 20, height: 20)
-                            .onTapGesture {
-                                daysSelected[index].toggle()
-                            }
-                        Text(weekdays[index])
-                            .font(.caption)
-                    }
-                }
-            }
-        }
-    }
-}
-
-
 struct HabitDetailView: View {
     @ObservedObject var item: Item
     @State private var newName: String
@@ -139,6 +105,8 @@ struct AddHabitView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) private var viewContext
     @State private var habitName: String = ""
+    @State private var selectedColorIndex: Int = -1
+    let rainbowColors: [Color] = [.red, .orange, .yellow, .green, .blue, .purple, .pink]
 
     var body: some View {
         ZStack {
@@ -146,6 +114,24 @@ struct AddHabitView: View {
             VStack {
                 TextField("Enter habit name", text: $habitName)
                     .padding()
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(rainbowColors.indices, id: \.self) { index in
+                            Circle()
+                                .fill(rainbowColors[index])
+                                .frame(width: selectedColorIndex == index ? 40 : 30,
+                                       height: selectedColorIndex == index ? 40 : 30)
+                                .overlay(
+                                    Circle().stroke(rainbowColors[index], lineWidth: selectedColorIndex == index ? 3 : 1)
+                                )
+                                .padding(4)
+                                .onTapGesture {
+                                    selectedColorIndex = index
+                                }
+                        }
+                    }
+                }
+                .padding()
                 HStack {
                     Spacer()
                     Button("Cancel") {
@@ -153,17 +139,7 @@ struct AddHabitView: View {
                     }
                     .padding(.horizontal)
                     Button("Save") {
-                        if !habitName.isEmpty {
-                            let newItem = Item(context: viewContext)
-                            newItem.name = habitName
-                            do {
-                                try viewContext.save()
-                                presentationMode.wrappedValue.dismiss()
-                            } catch {
-                                let nsError = error as NSError
-                                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-                            }
-                        }
+                        addNewItem()
                     }
                     .padding(.horizontal)
                 }
@@ -172,10 +148,72 @@ struct AddHabitView: View {
             .background(Color.white)
             .cornerRadius(16)
             .shadow(radius: 10)
+            .frame(width: 375, height: 430)
+        }
+    }
+
+    private func addNewItem() {
+        let newItem = Item(context: viewContext)
+        newItem.name = habitName
+        newItem.color = selectedColorIndex == -1 ? nil : UIColor(rainbowColors[selectedColorIndex]).toHex()
+
+        do {
+            try viewContext.save()
+            presentationMode.wrappedValue.dismiss()
+        } catch {
+            print("Error saving managed object context: \(error)")
+        }
+    }
+}
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let r, g, b: UInt64
+        (r, g, b) = (int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        self.init(red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255)
+    }
+}
+
+
+struct HabitRow: View {
+    @ObservedObject var item: Item
+    @State private var daysSelected: [Bool] = [false, false, false, false, false, false, false]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(item.name ?? "New Habit")
+            HStack {
+                ForEach(0..<7) { index in
+                    VStack {
+                        Circle()
+                            .fill(daysSelected[index] ? Color(hex: item.color ?? "#FFFFFF") : Color.clear)  // Använd sparad färg
+                            .overlay(
+                                Circle().stroke(Color(hex: item.color ?? "#FFFFFF"), lineWidth: 2)  // Använd sparad färg
+                            )
+                            .frame(width: 20, height: 20)
+                            .onTapGesture {
+                                daysSelected[index].toggle()
+                            }
+                        Text(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][index])
+                            .font(.caption)
+                    }
+                }
+            }
         }
     }
 }
 
 
 
-
+extension UIColor {
+    func toHex() -> String? {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return String(format: "#%02X%02X%02X", Int(red * 255), Int(green * 255), Int(blue * 255))
+    }
+}
