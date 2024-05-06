@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  HabitTracker
-//
-//  Created by Maida on 2024-05-04.
-//
-
 import SwiftUI
 import CoreData
 
@@ -20,10 +13,8 @@ struct ContentView: View {
         NavigationView {
             List {
                 ForEach(items) { item in
-                    NavigationLink {
-                        Text("Habit: \(item.name ?? "New Habit")")
-                    } label: {
-                        Text(item.name ?? "New Habit")
+                    NavigationLink(destination: HabitDetailView(item: item)) {
+                        HabitRow(item: item)
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -41,14 +32,12 @@ struct ContentView: View {
                     EditButton()
                 }
             }
-            Text("Select an item")
         }
     }
 
     private func addItem() {
         withAnimation {
             let newItem = Item(context: viewContext)
-            //newItem.timestamp = Date()
             newItem.name = "New Habit"
             do {
                 try viewContext.save()
@@ -73,13 +62,43 @@ struct ContentView: View {
     }
 }
 
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
+struct HabitRow: View {
+    @ObservedObject var item: Item
+    @State private var daysSelected: [Bool] = [false, false, false, false, false, false, false]
+    let weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    let rainbowColors: [Color] = [
+        Color.red, Color.orange, Color.yellow, Color.green, Color.blue, Color.purple, Color.pink
+    ]
 
-#Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(item.name ?? "New Habit")
+            HStack {
+                ForEach(0..<7) { index in
+                    VStack {
+                        Circle()
+                            .fill(daysSelected[index] ? rainbowColors[index] : Color.clear)
+                            .overlay(
+                                Circle().stroke(rainbowColors[index], lineWidth: 2)
+                            )
+                            .frame(width: 20, height: 20)
+                            .onTapGesture {
+                                daysSelected[index].toggle()
+                            }
+                        Text(weekdays[index])
+                            .font(.caption)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+struct HabitDetailView: View {
+    @ObservedObject var item: Item
+
+    var body: some View {
+        Text("Detail view for \(item.name ?? "New Habit")")
+    }
 }
