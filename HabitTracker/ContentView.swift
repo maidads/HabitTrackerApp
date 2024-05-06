@@ -97,9 +97,33 @@ struct HabitRow: View {
 
 struct HabitDetailView: View {
     @ObservedObject var item: Item
+    @State private var newName: String
+
+    init(item: Item) {
+        self.item = item
+        _newName = State(initialValue: item.name ?? "")
+    }
 
     var body: some View {
-        Text("Detail view for \(item.name ?? "New Habit")")
+        VStack {
+            TextField("Enter new name", text: $newName)
+                .padding()
+            Button("Save") {
+                if !newName.isEmpty {
+                    item.name = newName
+                    do {
+                        try item.managedObjectContext?.save()
+                    } catch {
+                        let nsError = error as NSError
+                        fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                    }
+                }
+            }
+            .padding()
+        }
+        .navigationTitle("Edit Habit")
     }
 }
+
+
 
