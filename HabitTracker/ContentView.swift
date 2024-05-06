@@ -15,7 +15,7 @@ struct ContentView: View {
                     }
                 }
                 .onDelete(perform: deleteItems)
-            }
+            } 
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
@@ -188,9 +188,9 @@ struct HabitRow: View {
                 ForEach(0..<7) { index in
                     VStack {
                         Circle()
-                            .fill(daysSelected[index] ? Color(hex: item.color ?? "#FFFFFF") : Color.clear)  // Använd sparad färg
+                            .fill(daysSelected[index] ? Color(hex: item.color ?? "#FFFFFF") : Color.clear)
                             .overlay(
-                                Circle().stroke(Color(hex: item.color ?? "#FFFFFF"), lineWidth: 2)  // Använd sparad färg
+                                Circle().stroke(Color(hex: item.color ?? "#FFFFFF"), lineWidth: 2)
                             )
                             .frame(width: 20, height: 20)
                             .onTapGesture {
