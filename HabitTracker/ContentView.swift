@@ -22,7 +22,7 @@ struct ContentView: View {
                         showingAddHabitView = true
                     }) {
                         HStack {
-                            Image(systemName: "plus")
+                            Image(systemName: "plus").foregroundColor(.black)
                             Text("Add a new habit")
                         }
                     }
@@ -34,7 +34,7 @@ struct ContentView: View {
             .sheet(isPresented: $showingAddHabitView) {
                 AddHabitView()
             }
-        }
+        }.accentColor(.black)
     }
 
     private func addItem() {
