@@ -66,24 +66,50 @@ struct ContentView: View {
 
 struct HabitDetailView: View {
     @ObservedObject var item: Item
-    @State private var newName: String
-
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.managedObjectContext) private var viewContext
+
+    @State private var newName: String
+    @State private var selectedColorIndex: Int = -1
+    let rainbowColors: [Color] = [.red, .orange, .yellow, .green, .blue, .purple, .pink]
 
     init(item: Item) {
         self.item = item
         _newName = State(initialValue: item.name ?? "")
+        if let colorHex = item.color, let index = rainbowColors.firstIndex(where: { UIColor($0).toHex() == colorHex }) {
+            _selectedColorIndex = State(initialValue: index)
+        }
     }
 
     var body: some View {
         VStack {
             TextField("Enter new name", text: $newName)
                 .padding()
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(rainbowColors.indices, id: \.self) { index in
+                        Circle()
+                            .fill(rainbowColors[index])
+                            .frame(width: selectedColorIndex == index ? 40 : 30,
+                                   height: selectedColorIndex == index ? 40 : 30)
+                            .overlay(
+                                Circle().stroke(rainbowColors[index], lineWidth: selectedColorIndex == index ? 3 : 1)
+                            )
+                            .onTapGesture {
+                                selectedColorIndex = index
+                            }
+                            .padding(4)
+                    }
+                }
+            }
+            .padding()
+
             Button("Save") {
                 if !newName.isEmpty {
                     item.name = newName
+                    item.color = selectedColorIndex == -1 ? nil : UIColor(rainbowColors[selectedColorIndex]).toHex()
                     do {
-                        try item.managedObjectContext?.save()
+                        try viewContext.save()
                         presentationMode.wrappedValue.dismiss()
                     } catch {
                         let nsError = error as NSError
@@ -93,10 +119,10 @@ struct HabitDetailView: View {
             }
             .padding()
         }
+        .navigationTitle("Edit Habit")
         .onAppear {
             newName = item.name ?? ""
         }
-        .navigationTitle("Edit Habit")
     }
 }
 
@@ -259,4 +285,8 @@ extension UIColor {
         self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         return String(format: "#%02X%02X%02X", Int(red * 255), Int(green * 255), Int(blue * 255))
     }
+    convenience init(color: Color) {
+            let uiColor = UIColor(color)
+            self.init(cgColor: uiColor.cgColor)
+        }
 }
