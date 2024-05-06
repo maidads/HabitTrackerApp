@@ -23,7 +23,7 @@ struct ContentView: View {
                     }) {
                         HStack {
                             Image(systemName: "plus").foregroundColor(.black)
-                            Text("Add a new habit")
+                            Text("New habit")
                         }
                     }
                 }
