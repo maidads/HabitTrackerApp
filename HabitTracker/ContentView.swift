@@ -99,6 +99,8 @@ struct HabitDetailView: View {
     @ObservedObject var item: Item
     @State private var newName: String
 
+    @Environment(\.presentationMode) var presentationMode
+
     init(item: Item) {
         self.item = item
         _newName = State(initialValue: item.name ?? "")
@@ -113,6 +115,7 @@ struct HabitDetailView: View {
                     item.name = newName
                     do {
                         try item.managedObjectContext?.save()
+                        presentationMode.wrappedValue.dismiss()
                     } catch {
                         let nsError = error as NSError
                         fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
@@ -121,9 +124,13 @@ struct HabitDetailView: View {
             }
             .padding()
         }
+        .onAppear {
+            newName = item.name ?? ""
+        }
         .navigationTitle("Edit Habit")
     }
 }
+
 
 
 
