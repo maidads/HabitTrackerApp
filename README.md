@@ -15,6 +15,7 @@ Pass:
 • Storage of how long a "streak" is for each habit, i.e., how many consecutive days the habit has been performed.✅
 
 
+
 Distinction:
 
 • A compilation of the user's performed habits for each day, week, and month.✅
