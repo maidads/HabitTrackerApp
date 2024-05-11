@@ -3,41 +3,56 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)], animation: .default) private var items: FetchedResults<Item>
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        animation: .default
+    ) private var items: FetchedResults<Item>
+
     @State private var showingAddHabitView = false
 
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink(destination: HabitDetailView(item: item)) {
-                        HabitRow(item: item)
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            } 
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        showingAddHabitView = true
-                    }) {
-                        HStack {
-                            Image(systemName: "plus").foregroundColor(.black)
-                            Text("New habit")
+        TabView {
+            NavigationView {
+                List {
+                    ForEach(items) { item in
+                        NavigationLink(destination: HabitDetailView(item: item)) {
+                            HabitRow(item: item)
                         }
                     }
+                    .onDelete(perform: deleteItems)
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: {
+                            showingAddHabitView = true
+                        }) {
+                            HStack {
+                                Image(systemName: "plus").foregroundColor(.black)
+                                Text("New habit")
+                            }
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        EditButton()
+                    }
                 }
-            }
-            .sheet(isPresented: $showingAddHabitView) {
-                AddHabitView()
-            }
-            .navigationBarTitle("Habit Tracker", displayMode: .large)
-            .navigationBarTitleDisplayMode(.large)
+                .sheet(isPresented: $showingAddHabitView) {
+                    AddHabitView()
+                }
+                .navigationBarTitle("Habit Tracker", displayMode: .large)
+                .navigationBarTitleDisplayMode(.large)
+            }.accentColor(.black)
+                .tabItem {
+                    Image(systemName: "house.fill")
+                    Text("Home")
+                }
+            
+            CalendarView()
+                .tabItem {
+                    Image(systemName: "calendar")
+                    Text("Calendar")
+                }
         }
-        .accentColor(.black)
     }
 
     private func addItem() {
@@ -299,3 +314,4 @@ extension UIColor {
             self.init(cgColor: uiColor.cgColor)
         }
 }
+

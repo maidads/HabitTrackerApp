@@ -16,6 +16,8 @@
 		FB16402C2BE5AA6F00344ECA /* HabitTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB16402B2BE5AA6F00344ECA /* HabitTrackerTests.swift */; };
 		FB1640362BE5AA6F00344ECA /* HabitTrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1640352BE5AA6F00344ECA /* HabitTrackerUITests.swift */; };
 		FB1640382BE5AA6F00344ECA /* HabitTrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1640372BE5AA6F00344ECA /* HabitTrackerUITestsLaunchTests.swift */; };
+		FB1640842BEEF59900344ECA /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1640832BEEF59900344ECA /* CalendarView.swift */; };
+		FB1640862BEEF5C300344ECA /* CalendarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1640852BEEF5C300344ECA /* CalendarComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		FB1640312BE5AA6F00344ECA /* HabitTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabitTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB1640352BE5AA6F00344ECA /* HabitTrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitTrackerUITests.swift; sourceTree = "<group>"; };
 		FB1640372BE5AA6F00344ECA /* HabitTrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitTrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		FB1640832BEEF59900344ECA /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		FB1640852BEEF5C300344ECA /* CalendarComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,8 @@
 				FB16401E2BE5AA6F00344ECA /* Persistence.swift */,
 				FB1640202BE5AA6F00344ECA /* HabitTracker.xcdatamodeld */,
 				FB16401B2BE5AA6F00344ECA /* Preview Content */,
+				FB1640832BEEF59900344ECA /* CalendarView.swift */,
+				FB1640852BEEF5C300344ECA /* CalendarComponent.swift */,
 			);
 			path = HabitTracker;
 			sourceTree = "<group>";
@@ -263,8 +269,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB1640842BEEF59900344ECA /* CalendarView.swift in Sources */,
 				FB16401F2BE5AA6F00344ECA /* Persistence.swift in Sources */,
 				FB1640222BE5AA6F00344ECA /* HabitTracker.xcdatamodeld in Sources */,
+				FB1640862BEEF5C300344ECA /* CalendarComponent.swift in Sources */,
 				FB1640182BE5AA6D00344ECA /* ContentView.swift in Sources */,
 				FB1640162BE5AA6D00344ECA /* HabitTrackerApp.swift in Sources */,
 			);
