@@ -255,7 +255,7 @@ struct HabitRow: View {
                         }
                     }
                     Text("🔥 \(currentStreak)")
-                        .padding(.leading, 40)
+                        .padding(.top, -50).padding(.leading, -10)
                         .foregroundColor(Color.black)
                 }
             }.onAppear {
