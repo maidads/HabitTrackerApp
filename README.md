@@ -22,7 +22,7 @@ Distinction:
 
 • Ability to set reminders for each habit, so that the user receives a reminder to perform the habit at a specific time each day.✅
 
-![Simulator Screenshot - iPhone 15 Pro - 2024-05-11 at 03 38 53](https://github.com/maidads/HabitTrackerApp/assets/98819095/02b64a1a-92ca-4dc4-9e56-55d591be8deb)
+![Simulator Screenshot - iPhone 15 Pro - 2024-05-11 at 03 20 35](https://github.com/maidads/HabitTrackerApp/assets/98819095/02b64a1a-92ca-4dc4-9e56-55d591be8deb)
 
 ![Simulator Screenshot - iPhone 15 Pro - 2024-05-11 at 03 38 59](https://github.com/maidads/HabitTrackerApp/assets/98819095/7cbf1cff-931d-40d8-a7a1-40558eabfb03)
 ![Simulator Screenshot - iPhone 15 Pro - 2024-05-11 at 03 39 08](https://github.com/maidads/HabitTrackerApp/assets/98819095/5e74ad37-b740-4f90-989f-a602458d3a22)
