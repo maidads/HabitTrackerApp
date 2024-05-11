@@ -22,8 +22,18 @@ Distinction:
 
 • Ability to set reminders for each habit, so that the user receives a reminder to perform the habit at a specific time each day.✅
 
-![Simulator Screenshot - iPhone 15 Pro - 2024-05-11 at 03 20 35](https://github.com/maidads/HabitTrackerApp/assets/98819095/02b64a1a-92ca-4dc4-9e56-55d591be8deb)
+First pic: In home page can you add new habits that you want to keep track of using the plus sign. You can also edit the name, change the color, or delete one with the edit button. You can also keep track of how many habits you have completed in a row with the fire emoji.
+<img width="300" alt="Skärmavbild 2024-05-11 kl  12 44 09" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/d4f1d024-991f-40ae-868b-c250f6169728">
 
-![Simulator Screenshot - iPhone 15 Pro - 2024-05-11 at 03 38 59](https://github.com/maidads/HabitTrackerApp/assets/98819095/7cbf1cff-931d-40d8-a7a1-40558eabfb03)
-![Simulator Screenshot - iPhone 15 Pro - 2024-05-11 at 03 39 08](https://github.com/maidads/HabitTrackerApp/assets/98819095/5e74ad37-b740-4f90-989f-a602458d3a22)
-![Simulator Screenshot - iPhone 15 Pro - 2024-05-11 at 03 39 12](https://github.com/maidads/HabitTrackerApp/assets/98819095/d020a093-7e11-48e2-84ca-6ea39ec29139)
+Second pic: This is how it looks when you push the plus sign and want to add a new habit. 
+
+<img width="300" alt="Skärmavbild 2024-05-11 kl  12 44 02" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/1028aa4f-5fdb-45d3-aeb0-494e159be762">
+
+Third pic: In the calendar, you need first to select which habit you want to track for the entire month and also set a reminder so that you don't forget to do it.
+
+<img width="300" alt="Skärmavbild 2024-05-11 kl  12 43 55" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/90f76136-3edc-42d8-b650-2ab7fc8ff457">
+
+Fourth pic: This is an empty calendar.
+
+<img width="300" alt="Skärmavbild 2024-05-11 kl  12 43 48" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/d3666340-c321-4fe6-b50a-457f387c52c6">
+
