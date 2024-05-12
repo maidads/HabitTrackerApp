@@ -84,16 +84,21 @@ struct ContentView: View {
 
 struct HabitDetailView: View {
     @ObservedObject var item: Item
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.managedObjectContext) private var viewContext
+        @Environment(\.presentationMode) var presentationMode
+        @Environment(\.managedObjectContext) private var viewContext
 
-    @State private var newName: String
-    @State private var selectedColorIndex: Int = -1
+        @State private var newName: String
+        @State private var selectedColorIndex: Int = -1
+        @State private var reminderEnabled: Bool
+        @State private var reminderTime: Date
+    
     let rainbowColors: [Color] = [.red, .orange, .yellow, .green, .blue, .purple, .pink]
 
     init(item: Item) {
         self.item = item
         _newName = State(initialValue: item.name ?? "")
+        _reminderEnabled = State(initialValue: item.reminderEnabled)
+        _reminderTime = State(initialValue: item.reminderTime ?? Date())
         if let colorHex = item.color, let index = rainbowColors.firstIndex(where: { UIColor($0).toHex() == colorHex }) {
             _selectedColorIndex = State(initialValue: index)
         }
@@ -103,6 +108,12 @@ struct HabitDetailView: View {
         VStack {
             TextField("Enter new name", text: $newName)
                 .padding()
+            Toggle("Enable Reminder", isOn: $reminderEnabled)
+                           .padding()
+                       if reminderEnabled {
+                           DatePicker("Reminder Time", selection: $reminderTime, displayedComponents: .hourAndMinute)
+                               .padding()
+                       }
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(rainbowColors.indices, id: \.self) { index in
@@ -123,18 +134,20 @@ struct HabitDetailView: View {
             .padding()
 
             Button("Save") {
-                if !newName.isEmpty {
-                    item.name = newName
-                    item.color = selectedColorIndex == -1 ? nil : UIColor(rainbowColors[selectedColorIndex]).toHex()
-                    do {
-                        try viewContext.save()
-                        presentationMode.wrappedValue.dismiss()
-                    } catch {
-                        let nsError = error as NSError
-                        fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-                    }
-                }
-            }
+                            if !newName.isEmpty {
+                                item.name = newName
+                                item.color = selectedColorIndex == -1 ? nil : UIColor(rainbowColors[selectedColorIndex]).toHex()
+                                item.reminderEnabled = reminderEnabled
+                                item.reminderTime = reminderEnabled ? reminderTime : nil
+                                do {
+                                    try viewContext.save()
+                                    presentationMode.wrappedValue.dismiss()
+                                } catch {
+                                    let nsError = error as NSError
+                                    fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                                }
+                            }
+                        }
             .padding()
         }
         .navigationTitle("Edit Habit")
@@ -142,8 +155,21 @@ struct HabitDetailView: View {
             newName = item.name ?? ""
         }
     }
+    
+    private func saveChanges() {
+        item.name = newName
+        item.color = selectedColorIndex == -1 ? nil : UIColor(rainbowColors[selectedColorIndex]).toHex()
+        item.reminderEnabled = reminderEnabled
+        item.reminderTime = reminderEnabled ? reminderTime : nil
+        do {
+            try viewContext.save()
+            presentationMode.wrappedValue.dismiss()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
 }
-
 
 struct AddHabitView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -209,6 +235,7 @@ struct AddHabitView: View {
         }
     }
 }
+
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
@@ -220,14 +247,13 @@ extension Color {
     }
 }
 
-
 struct HabitRow: View {
-    @ObservedObject var item: Item
+        @ObservedObject var item: Item
         @State private var daysSelected: [Bool]
         @State private var currentStreak: Int
         let calendar = Calendar.current
         
-    init(item: Item) {
+        init(item: Item) {
             self.item = item
             _daysSelected = State(initialValue: item.daysSelected?.map { $0 == "1" } ?? Array(repeating: false, count: 7))
             _currentStreak = State(initialValue: Int(item.currentStreak))
@@ -271,11 +297,12 @@ struct HabitRow: View {
                     currentStreak = Int(item.currentStreak) 
             }
         }
-        func loadDaysSelected() {
+        
+    func loadDaysSelected() {
             if let daysString = item.daysSelected {
                 daysSelected = daysString.map { $0 == "1" }
             }
-        }
+    }
 
     private func updateDaysSelectedInCoreData() {
         item.daysSelected = daysSelected.map { $0 ? "1" : "0" }.joined()
@@ -308,9 +335,6 @@ struct HabitRow: View {
     }
 }
 
-
-
-
 extension UIColor {
     func toHex() -> String? {
         var red: CGFloat = 0
@@ -325,4 +349,3 @@ extension UIColor {
             self.init(cgColor: uiColor.cgColor)
         }
 }
-
