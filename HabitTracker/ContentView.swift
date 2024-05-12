@@ -279,7 +279,7 @@ struct HabitRow: View {
 
     private func updateDaysSelectedInCoreData() {
         item.daysSelected = daysSelected.map { $0 ? "1" : "0" }.joined()
-        item.currentStreak = Int16(currentStreak)  // Save the streak as a Core Data attribute.
+        item.currentStreak = Int16(currentStreak)
         do {
             try item.managedObjectContext?.save()
         } catch {
@@ -303,7 +303,7 @@ struct HabitRow: View {
                 break
             }
         }
-        currentStreak = streakCount  // Update the current streak state
+        currentStreak = streakCount
         return streakCount
     }
 }
