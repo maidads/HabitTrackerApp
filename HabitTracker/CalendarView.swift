@@ -30,31 +30,44 @@ struct CalendarView: View {
 }
 
 
+import SwiftUI
+
 struct HabitCalendarView: View {
     @ObservedObject var habit: Item
     @Environment(\.calendar) var calendar
 
-    private var year: DateInterval {
-        calendar.dateInterval(of: .year, for: Date())!
-    }
-    
     private var dayFormatter: DateFormatter {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "d"
-            return formatter
-        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d"
+        return formatter
+    }
+
+    private var headerFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE"
+        return formatter
+    }
 
     var body: some View {
         VStack {
             Text("Calendar for \(habit.name ?? "Habit")").font(.headline)
-            let days = daysInMonth(Date())
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7)) {
-                            ForEach(days, id: \.self) { day in
-                                Text(dayFormatter.string(from: day))
-                                    .padding(8)
-                                    .background(isHabitTrackedOn(day) ? Color.green : Color.clear)
-                                    .cornerRadius(10)
-                         }
+            HStack(spacing: 0) {
+                ForEach(daysOfTheWeek(), id: \.self) { day in
+                    Text(headerFormatter.string(from: day))
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                        .font(.caption)
+                }
+            }
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
+                ForEach(daysInMonth(Date()), id: \.self) { day in
+                    Text(dayFormatter.string(from: day))
+                        .frame(width: 30, height: 30)
+                        .padding(8)
+                        .background(Circle()
+                                        .fill(isToday(day) ? Color.blue : (isHabitTrackedOn(day) ? Color.green : Color.gray.opacity(0.2))))
+                        .foregroundColor(Color.white)
+                }
             }
         }
     }
@@ -75,7 +88,19 @@ struct HabitCalendarView: View {
         let dateString = dateFormatter.string(from: date)
         return habit.trackedDates?.contains(dateString) ?? false
     }
+
+    private func isToday(_ date: Date) -> Bool {
+        calendar.isDateInToday(date)
+    }
+
+    private func daysOfTheWeek() -> [Date] {
+        let today = Date()
+        let currentWeekday = calendar.component(.weekday, from: today)
+        let days = (1...7).map { calendar.date(byAdding: .day, value: $0 - currentWeekday, to: today)! }
+        return days
+    }
 }
+
 
 extension Calendar {
     func generateDates(inside interval: DateInterval, matching components: DateComponents) -> [Date] {
