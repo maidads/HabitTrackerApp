@@ -22,18 +22,19 @@ Distinction:
 
 • Ability to set reminders for each habit, so that the user receives a reminder to perform the habit at a specific time each day.✅
 
-First pic: In home page can you add new habits that you want to keep track of using the plus sign. You can also edit the name, change the color, or delete one with the edit button. You can also keep track of how many habits you have completed in a row with the fire emoji.
-<img width="300" alt="Skärmavbild 2024-05-11 kl  12 44 09" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/d4f1d024-991f-40ae-868b-c250f6169728">
+In first picture, in home page you can add new habits that you want to keep track of using the plus sign. You can also edit the name, change the color, or delete one with the edit button. You can also keep track of how many habits you have completed in a row with the fire emoji.
 
-Second pic: This is how it looks when you push the plus sign and want to add a new habit. 
+<img width="260" alt="Skärmavbild 2024-05-11 kl  12 44 09" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/d4f1d024-991f-40ae-868b-c250f6169728">
 
-<img width="300" alt="Skärmavbild 2024-05-11 kl  12 44 02" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/1028aa4f-5fdb-45d3-aeb0-494e159be762">
+On the left, this is how it looks when you push the plus sign and want to add a new habit. On the right is how it looks when you want to edit a habit. You can also set a reminder so that you don't forget to do it.
 
-Third pic: In the calendar, you need first to select which habit you want to track for the entire month and also set a reminder so that you don't forget to do it.
+<img width="260" alt="Skärmavbild 2024-05-11 kl  12 44 02" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/1028aa4f-5fdb-45d3-aeb0-494e159be762"><img width="260" alt="Skärmavbild 2024-05-12 kl  23 03 19" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/898b38cc-cd2f-448d-a878-0ebb069e0e6d"><img width="260" alt="Skärmavbild 2024-05-12 kl  23 03 32" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/2c5bf3d3-a65c-46b6-a322-adc6597a6985">
 
-<img width="300" alt="Skärmavbild 2024-05-11 kl  12 43 55" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/90f76136-3edc-42d8-b650-2ab7fc8ff457">
 
-Fourth pic: This is an empty calendar.
+Lastly, in the calendar, you need first to select which habit you want to track for the entire month. Then you will get for example the calendar for training.
 
-<img width="300" alt="Skärmavbild 2024-05-11 kl  12 43 48" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/d3666340-c321-4fe6-b50a-457f387c52c6">
+<img width="260" alt="Skärmavbild 2024-05-11 kl  12 43 55" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/90f76136-3edc-42d8-b650-2ab7fc8ff457">
+<img width="260" alt="Skärmavbild 2024-05-12 kl  23 05 46" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/41de0f5e-7de7-40c8-bd2f-210ca7cf5f2e">
+
+
 
