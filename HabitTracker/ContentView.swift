@@ -223,9 +223,15 @@ extension Color {
 
 struct HabitRow: View {
     @ObservedObject var item: Item
-        @State private var daysSelected: [Bool] = [false, false, false, false, false, false, false]
-        @State private var currentStreak: Int = 0
+        @State private var daysSelected: [Bool]
+        @State private var currentStreak: Int
         let calendar = Calendar.current
+        
+    init(item: Item) {
+            self.item = item
+            _daysSelected = State(initialValue: item.daysSelected?.map { $0 == "1" } ?? Array(repeating: false, count: 7))
+            _currentStreak = State(initialValue: Int(item.currentStreak))
+        }
 
         var body: some View {
             VStack(alignment: .leading, spacing: 8) {
@@ -259,7 +265,10 @@ struct HabitRow: View {
                         .foregroundColor(Color.black)
                 }
             }.onAppear {
-                loadDaysSelected()
+                if let daysString = item.daysSelected {
+                        daysSelected = daysString.map { $0 == "1" }
+                    }
+                    currentStreak = Int(item.currentStreak) 
             }
         }
         func loadDaysSelected() {
@@ -268,33 +277,35 @@ struct HabitRow: View {
             }
         }
 
-        func updateDaysSelectedInCoreData() {
-            item.daysSelected = daysSelected.map { $0 ? "1" : "0" }.joined()
-            do {
-                try item.managedObjectContext?.save()
-            } catch {
-                print("Failed to save days selected: \(error)")
+    private func updateDaysSelectedInCoreData() {
+        item.daysSelected = daysSelected.map { $0 ? "1" : "0" }.joined()
+        item.currentStreak = Int16(currentStreak)
+        do {
+            try item.managedObjectContext?.save()
+        } catch {
+            print("Failed to save days selected: \(error)")
+        }
+    }
+
+    func calculateStreak(at index: Int) -> Int {
+        var streakCount = 0
+        for i in index..<daysSelected.count {
+            if daysSelected[i] {
+                streakCount += 1
+            } else {
+                break
             }
         }
-    
-        func calculateStreak(at index: Int) -> Int {
-            var streakCount = 0
-            for i in index..<daysSelected.count {
-                if daysSelected[i] {
-                    streakCount += 1
-                } else {
-                    break
-                }
+        for i in (0..<index).reversed() {
+            if daysSelected[i] {
+                streakCount += 1
+            } else {
+                break
             }
-            for i in (0..<index).reversed() {
-                if daysSelected[i] {
-                    streakCount += 1
-                } else {
-                    break
-                }
-            }
-            return streakCount
         }
+        currentStreak = streakCount
+        return streakCount
+    }
 }
 
 
