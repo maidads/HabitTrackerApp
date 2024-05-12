@@ -29,7 +29,6 @@ struct CalendarView: View {
     }
 }
 
-
 struct HabitCalendarView: View {
     @ObservedObject var habit: Item
     @Environment(\.calendar) var calendar
@@ -39,17 +38,18 @@ struct HabitCalendarView: View {
     init(habit: Item) {
             _habit = ObservedObject(initialValue: habit)
         }
+    
     static private var dayFormatter: DateFormatter = {
             let formatter = DateFormatter()
             formatter.dateFormat = "d"
             return formatter
-        }()
+    }()
 
-        static private var headerFormatter: DateFormatter = {
+    static private var headerFormatter: DateFormatter = {
             let formatter = DateFormatter()
             formatter.dateFormat = "EEE"
             return formatter
-        }()
+    }()
 
     var body: some View {
         VStack {
@@ -93,7 +93,6 @@ struct HabitCalendarView: View {
                 toggleDaySelected(day: day)
             }
     }
-
 
     private func updateTrackedDatesSet() {
         trackedDatesSet = Set(habit.trackedDates?.split(separator: ",").map(String.init) ?? [])
@@ -145,7 +144,6 @@ struct HabitCalendarView: View {
 
 }
 
-
 extension Calendar {
     func generateDates(inside interval: DateInterval, matching components: DateComponents) -> [Date] {
         var dates: [Date] = []
@@ -163,5 +161,3 @@ extension Calendar {
         return dates
     }
 }
-
-
