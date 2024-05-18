@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FB00D0EB2BF828AE00C9DB59 /* HabitDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB00D0EA2BF828AE00C9DB59 /* HabitDetailView.swift */; };
+		FB00D0ED2BF828F900C9DB59 /* AddHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB00D0EC2BF828F900C9DB59 /* AddHabitView.swift */; };
 		FB1640162BE5AA6D00344ECA /* HabitTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1640152BE5AA6D00344ECA /* HabitTrackerApp.swift */; };
 		FB1640182BE5AA6D00344ECA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1640172BE5AA6D00344ECA /* ContentView.swift */; };
 		FB16401A2BE5AA6F00344ECA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB1640192BE5AA6F00344ECA /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		FB00D0EA2BF828AE00C9DB59 /* HabitDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDetailView.swift; sourceTree = "<group>"; };
+		FB00D0EC2BF828F900C9DB59 /* AddHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitView.swift; sourceTree = "<group>"; };
 		FB1640122BE5AA6D00344ECA /* HabitTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabitTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB1640152BE5AA6D00344ECA /* HabitTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitTrackerApp.swift; sourceTree = "<group>"; };
 		FB1640172BE5AA6D00344ECA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				FB16401B2BE5AA6F00344ECA /* Preview Content */,
 				FB1640832BEEF59900344ECA /* CalendarView.swift */,
 				FB00D0EA2BF828AE00C9DB59 /* HabitDetailView.swift */,
+				FB00D0EC2BF828F900C9DB59 /* AddHabitView.swift */,
 			);
 			path = HabitTracker;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 			files = (
 				FB1640842BEEF59900344ECA /* CalendarView.swift in Sources */,
 				FB16401F2BE5AA6F00344ECA /* Persistence.swift in Sources */,
+				FB00D0ED2BF828F900C9DB59 /* AddHabitView.swift in Sources */,
 				FB00D0EB2BF828AE00C9DB59 /* HabitDetailView.swift in Sources */,
 				FB1640222BE5AA6F00344ECA /* HabitTracker.xcdatamodeld in Sources */,
 				FB1640182BE5AA6D00344ECA /* ContentView.swift in Sources */,
