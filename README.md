@@ -24,6 +24,8 @@ Distinction:
 
 In first picture, in home page you can add new habits that you want to keep track of using the plus sign. You can also edit the name, change the color, or delete one with the edit button. You can also keep track of how many habits you have completed in a row with the fire emoji.
 
+<img width="275" alt="Skärmavbild 2024-05-18 kl  01 56 00" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/ba14b236-f8cf-4db4-aa14-8dfcd11c78ae">
+
 <img width="260" alt="Skärmavbild 2024-05-11 kl  12 44 09" src="https://github.com/maidads/HabitTrackerApp/assets/98819095/d4f1d024-991f-40ae-868b-c250f6169728">
 
 On the left, this is how it looks when you push the plus sign and want to add a new habit. On the right is how it looks when you want to edit a habit. You can also set a reminder so that you don't forget to do it.
