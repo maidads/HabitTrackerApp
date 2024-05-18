@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreData
+import UserNotifications
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -53,7 +54,16 @@ struct ContentView: View {
                     Text("Calendar")
                 }
         }
+        .onAppear(perform: requestNotificationPermission)
     }
+    
+    private func requestNotificationPermission() {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                if let error = error {
+                    print("Error requesting notification permission: \(error)")
+                }
+            }
+        }
 
     private func addItem() {
         withAnimation {
@@ -134,20 +144,8 @@ struct HabitDetailView: View {
             .padding()
 
             Button("Save") {
-                            if !newName.isEmpty {
-                                item.name = newName
-                                item.color = selectedColorIndex == -1 ? nil : UIColor(rainbowColors[selectedColorIndex]).toHex()
-                                item.reminderEnabled = reminderEnabled
-                                item.reminderTime = reminderEnabled ? reminderTime : nil
-                                do {
-                                    try viewContext.save()
-                                    presentationMode.wrappedValue.dismiss()
-                                } catch {
-                                    let nsError = error as NSError
-                                    fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-                                }
-                            }
-                        }
+                saveChanges()
+            }
             .padding()
         }
         .navigationTitle("Edit Habit")
@@ -163,11 +161,40 @@ struct HabitDetailView: View {
         item.reminderTime = reminderEnabled ? reminderTime : nil
         do {
             try viewContext.save()
-            presentationMode.wrappedValue.dismiss()
-        } catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            if reminderEnabled {
+                scheduleNotification()
+            } else {
+                removeNotification()
+            }
+                presentationMode.wrappedValue.dismiss()
+            } catch {
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+    }
+    
+    private func scheduleNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Habit Reminder"
+        content.body = "Time to work on your habit: \(newName)"
+        content.sound = UNNotificationSound.default
+        
+        var dateComponents = Calendar.current.dateComponents([.hour, .minute], from: reminderTime)
+        dateComponents.second = 0
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let request = UNNotificationRequest(identifier: item.objectID.uriRepresentation().absoluteString, content: content, trigger: trigger)
+            
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error)")
+            }
         }
+    }
+
+    private func removeNotification() {
+        let identifier = item.objectID.uriRepresentation().absoluteString
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
     }
 }
 
